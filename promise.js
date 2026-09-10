@@ -14,8 +14,15 @@ function f2() {
         }, 5000);
     });
 }
-f1().then(() => {
-    return f2();
-}).then(() => {
-    console.log("done");
-});
+
+async function main() {
+    try {
+        await f1();
+        await f2();
+    }
+    catch (err) {
+        console.log(err);
+    }
+}
+
+main();
