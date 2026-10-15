@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Bus Booking System</title>
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            min-height: 100vh;
+
+            display: flex;
+            justify-content: center;
+            align-items: center;
+
+            background-color: #f2f2f2;
+
+            font-family: Georgia, "Times New Roman", serif;
+        }
+
+        .container {
+            width: 500px;
+            min-height: 700px;
+
+            padding: 35px 40px;
+
+            text-align: center;
+            color: white;
+
+            background: linear-gradient(
+                145deg,
+                #7b2bd9,
+                #4c16b5
+            );
+
+            border: 2px solid #9d72e8;
+
+            box-shadow: 0px 10px 30px rgba(0,0,0,0.25);
+        }
+
+        h1 {
+            margin-bottom: 25px;
+
+            font-size: 32px;
+            line-height: 1.2;
+        }
+
+        h2 {
+            margin-bottom: 30px;
+
+            font-size: 23px;
+        }
+
+        .field {
+            display: flex;
+            align-items: center;
+
+            margin: 20px 0;
+
+            font-size: 19px;
+            font-weight: bold;
+        }
+
+        .field label {
+            width: 170px;
+            text-align: right;
+
+            margin-right: 10px;
+        }
+
+        input,
+        select {
+            width: 210px;
+            height: 34px;
+
+            border: none;
+            padding: 5px;
+
+            font-size: 16px;
+        }
+
+        .booking {
+            margin-top: 45px;
+        }
+
+        .booking h2 {
+            margin-bottom: 20px;
+        }
+
+        .option-title {
+            font-size: 18px;
+            font-weight: bold;
+
+            margin-bottom: 10px;
+        }
+
+        .bus-option {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+
+            gap: 8px;
+
+            margin: 10px 0;
+
+            font-size: 18px;
+            font-weight: bold;
+        }
+
+        input[type="radio"] {
+            width: auto;
+            height: auto;
+        }
+
+        .seat {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+
+            gap: 8px;
+
+            margin-top: 30px;
+
+            font-size: 18px;
+            font-weight: bold;
+        }
+
+        .seat select {
+            width: 50px;
+            height: 30px;
+        }
+
+        button {
+            margin-top: 30px;
+
+            padding: 9px 18px;
+
+            border: none;
+            border-radius: 2px;
+
+            font-size: 15px;
+            font-weight: bold;
+
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: white;
+        }
+
+        #result {
+            display: none;
+
+            margin-top: 25px;
+            padding: 15px;
+
+            background-color: rgba(255,255,255,0.15);
+
+            font-family: Arial, sans-serif;
+        }
+
+    </style>
+</head>
+
+
+<body>
+
+    <div class="container">
+
+        <h1>
+            Welcome Bus Booking<br>
+            System
+        </h1>
+
+
+        <!-- USER INFORMATION -->
+
+        <h2>User Informations</h2>
+
+
+        <div class="field">
+
+            <label>User Name:</label>
+
+            <input
+                type="text"
+                id="username"
+            >
+
+        </div>
+
+
+        <div class="field">
+
+            <label>Address:</label>
+
+            <select id="address">
+
+                <option>G2B</option>
+                <option>G2A</option>
+                <option>G1B</option>
+                <option>G1A</option>
+
+            </select>
+
+        </div>
+
+
+        <div class="field">
+
+            <label>User Age:</label>
+
+            <input
+                type="number"
+                id="age"
+            >
+
+        </div>
+
+
+        <div class="field">
+
+            <label>User Aadhar No</label>
+
+            <input
+                type="text"
+                id="aadhar"
+                maxlength="12"
+            >
+
+        </div>
+
+
+        <!-- BUS BOOKING -->
+
+        <div class="booking">
+
+            <h2>Bus Booking Options</h2>
+
+
+            <div class="option-title">
+                select Bus options:
+            </div>
+
+
+            <div class="bus-option">
+
+                AC BUS:2000
+
+                <input
+                    type="radio"
+                    name="bus"
+                    value="2000"
+                >
+
+            </div>
+
+
+            <div class="bus-option">
+
+                NON AC BUS:1000
+
+                <input
+                    type="radio"
+                    name="bus"
+                    value="1000"
+                >
+
+            </div>
+
+
+            <!-- SEAT -->
+
+            <div class="seat">
+
+                select your sheet
+
+                <select id="seat">
+
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                    <option value="4">4</option>
+                    <option value="5">5</option>
+                    <option value="6">6</option>
+                    <option value="7">7</option>
+                    <option value="8">8</option>
+                    <option value="9">9</option>
+                    <option value="10">10</option>
+
+                </select>
+
+            </div>
+
+
+            <!-- SAVE BUTTON -->
+
+            <button onclick="saveBooking()">
+
+                Click for Save
+
+            </button>
+
+
+            <!-- RESULT -->
+
+            <div id="result"></div>
+
+        </div>
+
+    </div>
+
+
+
+    <script>
+
+        function saveBooking() {
+
+            let name =
+                document.getElementById("username").value;
+
+            let address =
+                document.getElementById("address").value;
+
+            let age =
+                document.getElementById("age").value;
+
+            let aadhar =
+                document.getElementById("aadhar").value;
+
+            let seat =
+                document.getElementById("seat").value;
+
+
+            // selected bus
+
+            let bus =
+                document.querySelector(
+                    'input[name="bus"]:checked'
+                );
+
+
+            // validation
+
+            if (
+                name === "" ||
+                age === "" ||
+                aadhar === "" ||
+                bus === null
+            ) {
+
+                alert("Please fill all details!");
+
+                return;
+            }
+
+
+            // Aadhar validation
+
+            if (!/^\d{12}$/.test(aadhar)) {
+
+                alert(
+                    "Aadhar number must be 12 digits!"
+                );
+
+                return;
+            }
+
+
+            // bus type
+
+            let busType;
+
+            if (bus.value === "2000") {
+
+                busType = "AC BUS";
+
+            }
+            else {
+
+                busType = "NON AC BUS";
+
+            }
+
+
+            // result
+
+            let result =
+                document.getElementById("result");
+
+
+            result.innerHTML =
+
+                "<b>Booking Saved!</b><br><br>" +
+
+                "Name: " + name + "<br>" +
+
+                "Address: " + address + "<br>" +
+
+                "Age: " + age + "<br>" +
+
+                "Aadhar: ********" +
+                aadhar.slice(-4) + "<br>" +
+
+                "Bus: " + busType + "<br>" +
+
+                "Seat: " + seat + "<br>" +
+
+                "Fare: ₹" + bus.value;
+
+
+            result.style.display = "block";
+
+        }
+
+    </script>
+
+</body>
+
+</html>

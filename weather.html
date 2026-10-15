@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Weather</title>
+<style>
+    body {
+        font-family: Arial;
+        background-color: lightblue;
+        text-align: center;
+    }
+    input {
+        padding: 10px;
+        font-size: 18px;
+    }
+    button {
+        padding: 10px 20px;
+        font-size: 18px;
+    }
+    .card {
+        width: 300px;
+        margin: 30px auto;
+        padding: 20px;
+        background-color: white;
+        border-radius: 15px;
+    }
+
+    .temp {
+        font-size: 50px;
+    }
+
+    .city {
+        font-size: 30px;
+    }
+</style>
+</head>
+<body>
+<input type="text" id="city" placeholder="Enter city">
+<button onclick="getWeather()">Search</button>
+
+<div class="card">
+    <div class="city" id="cityName">City</div>
+    <div class="temp" id="temp">--°C</div>
+    <p id="weather">Today's Weather</p>
+</div>
+<script>
+    async function getWeather() {
+        let city = document.getElementById("city").value;
+        let url = `https://geocoding-api.open-meteo.com/v1/search?name=${city}&count=1`;
+        let res = await fetch(url);
+        let data = await res.json();
+        let latitude = data.results[0].latitude;
+        let longitude = data.results[0].longitude;
+        let weatherURL = `https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&current=temperature_2m,weather_code&timezone=auto`;
+        let weatherRes = await fetch(weatherURL);
+        let weatherData = await weatherRes.json();
+        document.getElementById("cityName").innerHTML =
+            data.results[0].name;
+        document.getElementById("temp").innerHTML =
+            weatherData.current.temperature_2m + "°C";
+        document.getElementById("weather").innerHTML =
+            "Today's Weather";
+    }
+</script>
+</body>
+</html>
